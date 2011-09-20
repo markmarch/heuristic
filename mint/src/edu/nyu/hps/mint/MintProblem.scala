@@ -1,10 +1,8 @@
 package edu.nyu.hps.mint
 
-object MintProblem {
-  def main(args: Array[String]) {
-    time {
-      exchangeProblem(args(0).toDouble)
-    }
+object MintProblem extends App {
+  time {
+    exchangeProblem(args(0).toDouble)
   }
 
   def exactExchangeProblem() {
@@ -20,10 +18,10 @@ object MintProblem {
     val exchange = ExchangeNumber.constructSolution(d)
     val entries = exchange.drop(101)
     val output = "{\"denominations\": [" + d.mkString(",") + "],\n" +
-        "\"exchanges\":[" + entries.map((entry: List[Int]) => "[" + entry.mkString(",")+"]").mkString(",\n") + "]}"
+      "\"exchanges\":[" + entries.map((entry: List[Int]) => "[" + entry.mkString(",") + "]").mkString(",\n") + "]}"
     println(output)
   }
-  
+
   def printExchange(price: Int, exchange: List[Int]) {
     println(price + (" " * (2 - price.toString.length)) + " [" + exchange.mkString(",")
       + "]")

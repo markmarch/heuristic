@@ -6,7 +6,6 @@ object ExchangeNumber {
     val record = Array.fill(200)(0)
     m(0) = 0
     m(100) = 0
-    // m(200) = 0
     for {
       change <- 1 to 99
       coin <- denomination
@@ -73,10 +72,9 @@ object ExchangeNumber {
     def makeChange(index: Int, length: Int) = {
       (Array.fill(index)(0) ++ (1 +: Array.fill(length - index - 1)(0))).toList
     }
-    val solution = new Array[List[Int]](201)
+    val solution = new Array[List[Int]](200)
     solution(0) = List(0, 0, 0, 0, 0)
     solution(100) = List(0, 0, 0, 0, 0)
-    solution(200) = List(0, 0, 0, 0, 0)
     for (index <- 0 until denomination.length) {
       solution(denomination(index)) = makeChange(index, denomination.length)
       solution(100 + denomination(index)) = makeChange(index, denomination.length)
