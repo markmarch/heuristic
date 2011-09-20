@@ -1,4 +1,8 @@
 package edu.nyu.hps.mint
+import scala.util.control.TailCalls.Call
+import java.util.concurrent.Callable
+import scala.collection.mutable.Queue
+import scala.parallel.Future
 
 object ExchangeNumber {
   def initialize(denomination: List[Int]) = {
@@ -50,22 +54,36 @@ object ExchangeNumber {
     continueAdd(0.0, 101)
   }
 
-  def findOptimal(n: Double) = {
-    var d = List(1, 5, 10, 25, 50, 100)
-    var minScore = calculateScore(d, Double.MaxValue, n)._2
-    var optimal = (d, minScore)
+  def findOptimal(n: Double, minScore:Double, start:Int) = {
+    var optimal = (List(0), minScore)
     for {
-      i <- 1 to 46
+      i <- start to 46
       j <- i + 1 to 47
       m <- j + 1 to 48
       k <- m + 1 to 49
       t <- k + 1 to 50
     } {
-      d = List(i, j, m, k, t, 100)
+      val d = List(i, j, m, k, t, 100)
       val (better, newScore) = calculateScore(d, optimal._2, n)
       if (better) optimal = (d.take(5), newScore)
     }
     optimal
+  }
+  
+  def findOptimal(n:Double):Tuple2[List[Int], Double] = {
+    import scala.actors.Future
+    import scala.actors.Futures._
+    var d = List(1, 5, 10, 25, 50, 100)
+    var minScore = calculateScore(d, Double.MaxValue, n)._2
+    var results = List[Future[Tuple2[List[Int], Double]]]()
+    for(i <- 0 to 7) {
+      val f = future {
+        println("calculating:" + (i* 6 +1))
+        findOptimal(n, minScore, i * 6 + 1)
+      }
+      results = results:::List(f)
+    }
+    results.map((f) => f()).sortWith((x, y) => if (x._2 <= y._2) true else false).head
   }
 
   def constructSolution(denomination: List[Int]): List[List[Int]] = {
