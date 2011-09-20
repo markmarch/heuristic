@@ -2,15 +2,9 @@ package edu.nyu.hps.mint
 
 object MintProblem {
   def main(args: Array[String]) {
-    val (d, _) = ExchangeNumber.findOptimal(args(0).toDouble)
-    val exchange = ExchangeNumber.constructSolution(d)
-    val entries = exchange.drop(101).take(99)
-    val output = "{\"denominations\": [" + d.mkString(",") + "],\n" +
-    		"\"exchanges\":[" + entries.map((entry: List[Int]) => "[" + entry.mkString(",")+"]").mkString(",\n") + "]}"
-    println(output)
-//    time{
-//      exchangeProblem
-//    }
+    time {
+      exchangeProblem(args(0).toDouble)
+    }
   }
 
   def exactExchangeProblem() {
@@ -20,10 +14,16 @@ object MintProblem {
     for (price <- 1 to 99) printExchange(price, solution(price))
   }
 
-  def exchangeProblem() {
-    val (denomination, score) = ExchangeNumber.findOptimal(4.0)
-    println("Score:" + score + "\nDemnomination:" + denomination)
+  def exchangeProblem(n: Double) {
+    val (d, score) = ExchangeNumber.findOptimal(n)
+    println("Score:" + score + "\nDemnomination:" + d)
+    val exchange = ExchangeNumber.constructSolution(d)
+    val entries = exchange.drop(101)
+    val output = "{\"denominations\": [" + d.mkString(",") + "],\n" +
+        "\"exchanges\":[" + entries.map((entry: List[Int]) => "[" + entry.mkString(",")+"]").mkString(",\n") + "]}"
+    println(output)
   }
+  
   def printExchange(price: Int, exchange: List[Int]) {
     println(price + (" " * (2 - price.toString.length)) + " [" + exchange.mkString(",")
       + "]")

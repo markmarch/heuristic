@@ -2,11 +2,11 @@ package edu.nyu.hps.mint
 
 object ExchangeNumber {
   def initialize(denomination: List[Int]) = {
-    val m = Array.fill(201)(Int.MaxValue - 1)
+    val m = Array.fill(200)(Int.MaxValue - 1)
     val record = Array.fill(200)(0)
     m(0) = 0
     m(100) = 0
-    m(200) = 0
+    // m(200) = 0
     for {
       change <- 1 to 99
       coin <- denomination
@@ -26,7 +26,7 @@ object ExchangeNumber {
     for (coin <- d) {
       if (coin == 100 && m(price) > m(price - 100)) {
         m(price) = m(price - 100)
-        record(price) = coin
+        record(price) = 100
       } else if (m(price) > m(price - coin) + 1) {
         m(price) = m(price - coin) + 1
         record(price) = coin
