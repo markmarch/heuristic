@@ -1,8 +1,11 @@
 package edu.nyu.hps.mint
 
-object MintProblem extends App {
-  time {
-    exchangeProblem(args(0).toDouble)
+object MintProblem {
+
+  def main(args: Array[String]) = {
+    time {
+      exchangeProblem(args(0).toDouble)
+    }
   }
 
   def exactExchangeProblem() {
