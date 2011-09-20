@@ -1,0 +1,6 @@
+Compile the source:
+mint > ./compile
+
+Run the program:
+mint > ./run 3.5
+where 3.5 is N. 
