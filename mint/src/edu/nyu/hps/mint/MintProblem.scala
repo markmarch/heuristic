@@ -3,7 +3,9 @@ package edu.nyu.hps.mint
 object MintProblem {
 
   def main(args: Array[String]) = {
-    exchangeProblem(args(0).toDouble)
+    time {
+      exchangeProblem(args(0).toDouble)
+    }
   }
 
   def exactExchangeProblem() {
@@ -15,7 +17,6 @@ object MintProblem {
 
   def exchangeProblem(n: Double) {
     val (d, score) = ExchangeNumber.findOptimal(n)
-    println("d:" + d + ", score:" + score)
     val exchange = ExchangeNumber.constructSolution(d)
     val entries = exchange.drop(101)
     val output = "{\"denominations\": [" + d.mkString(",") + "],\n" +

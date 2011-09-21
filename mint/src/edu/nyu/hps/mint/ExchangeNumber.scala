@@ -55,13 +55,12 @@ object ExchangeNumber {
     var minScore = calculateScore(d, Double.MaxValue, n)._2
     var optimal = (d, minScore)
     for {
-      i <- 1 to 46
-      j <- i + 1 to 47
+      j <- 2 to 47
       m <- j + 1 to 48
       k <- m + 1 to 49
       t <- k + 1 to 50
     } {
-      val d = List(i, j, m, k, t, 100)
+      val d = List(1, j, m, k, t, 100)
       val (better, newScore) = calculateScore(d, optimal._2, n)
       if (better) optimal = (d.take(5), newScore)
     }
@@ -89,7 +88,6 @@ object ExchangeNumber {
     }
     
     val d = denomination ::: List(100)
-    println(d)
     val (m, record) = initialize(d)
     for {
       price <- 101 to 199
@@ -108,9 +106,6 @@ object ExchangeNumber {
       if (record(price) == 100) {
         solution(price) = solution(100 - price)
       } else {
-        if (solution(price) == null || solution(record(price)) == null) {
-          println(price + "," + record(price))
-        }
         solution(price) = addList(solution(price - record(price)), solution(record(price)))
       }
     }
