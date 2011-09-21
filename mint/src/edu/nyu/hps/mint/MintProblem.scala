@@ -4,6 +4,7 @@ object MintProblem {
 
   def main(args: Array[String]) = {
     exchangeProblem(args(0).toDouble)
+    
   }
 
   def exactExchangeProblem() {
