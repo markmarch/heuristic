@@ -7,13 +7,13 @@ object ExchangeNumber {
     m(0) = 0
     m(100) = 0
     for {
-      change <- 1 to 99
+      change <- 1 to 100
       coin <- denomination
     } {
       if (coin == 100 && m(change) > m(100 - change)) {
         m(change) = m(100 - change)
         record(change) = coin
-      } else if (change >= coin && m(change) > m(change - coin) + 1) {
+      } else if (change >= coin && m(change) >= m(change - coin) + 1) {
         m(change) = m(change - coin) + 1
         record(change) = coin
       }
@@ -87,8 +87,9 @@ object ExchangeNumber {
     def subList(xs: List[Int], ys: List[Int]) = {
       (xs, ys).zipped.map { _ - _ }
     }
-
+    
     val d = denomination ::: List(100)
+    println(d)
     val (m, record) = initialize(d)
     for {
       price <- 101 to 199
@@ -97,20 +98,23 @@ object ExchangeNumber {
       if (coin == 100 && m(price) > m(200 - price)) {
         m(price) = m(200 - price)
         record(price) = coin
-      } else if (price >= coin && m(price) > m(price - coin) + 1) {
+      } else if (m(price) > m(price - coin) + 1) {
         m(price) = m(price - coin) + 1
         record(price) = coin
       }
     }
 
-    for (price <- 1 to 99) {
+    for (price <- 1 to 100) {
       if (record(price) == 100) {
         solution(price) = solution(100 - price)
       } else {
+        if (solution(price) == null || solution(record(price)) == null) {
+          println(price + "," + record(price))
+        }
         solution(price) = addList(solution(price - record(price)), solution(record(price)))
       }
     }
-    for(price <- 1 to 99) {
+    for(price <- 1 to 100) {
       solution(price) = solution(price).map {_ * -1}
     }
     
