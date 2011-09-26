@@ -11,7 +11,7 @@ object TspGA {
 //    val mutated = tour.mutate()
 //    println("Tour cost: " + tour.fitness + "\nMutated cost:" + mutated.fitness)
     time {
-      findOptimal("sample.txt")
+      findOptimal("a280.tsp")
     }
   }
   
