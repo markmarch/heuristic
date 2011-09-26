@@ -6,6 +6,9 @@ import scala.util.Random
  * Package level methods.
  */
 package object tsp {
+  // random seed
+  val random = new Random(1316995487325L)
+  
   // swap 2 elements in an array
   def swap[T](i : Int, j : Int, array : Array[T]) = {
     val temp = array(i)
@@ -17,7 +20,7 @@ package object tsp {
   def shuffle[T](xs : List[T])(implicit m: scala.reflect.Manifest[T]) = {
     val array = (for (i <- 0 until xs.length) yield xs(i)).toArray
     for (i <- array.length - 1 to 1 by -1) {
-      swap(i - 1, Random.nextInt(i), array)
+      swap(i - 1, random.nextInt(i), array)
     }
     array.toList
   }
@@ -26,6 +29,7 @@ package object tsp {
   def time(f : =>Unit) = {
     val start = System.currentTimeMillis
     f
-    System.currentTimeMillis - start
+    val timeUsed = System.currentTimeMillis - start
+    println("Time Used: " + timeUsed + " ms")
   }
 }

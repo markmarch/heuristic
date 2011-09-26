@@ -1,7 +1,7 @@
 package edu.nyu.hps.tsp
 
-class City(val number: Int, x : Int, y : Int, z : Int) {
-  val cordinates = List(x, y, z)
+case class City(val number: Int, x : Double, y : Double*) {
+  val cordinates = x :: (y.toList)
   def distanceTo(that : City)  = City.distanceBetween(this, that)
   
   override def toString = number + ":[" + cordinates.mkString(",") + "]"
