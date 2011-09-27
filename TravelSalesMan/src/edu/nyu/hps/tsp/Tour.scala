@@ -11,18 +11,41 @@ class Tour(val cities : List[Int], val map : Array[Array[Double]]) {
 
   def crossover(tour : Tour) = {
     @tailrec def addToTour(xs : List[Int], ys : List[Int], list : DList[Int]) : Tour = {
-      if (xs == Nil || ys == Nil || list.contains(xs.head) || list.contains(ys.head)) {
-        val tempList = list ++ (shuffle(for (city <- cities if !list.contains(city)) yield city))
-        new Tour(tempList.toList, map)
-      } else {
-        addToTour(xs.tail, ys.tail, xs.head +: list :+ ys.head)
+      (xs, ys) match {
+        case (Nil, Nil) => {
+          val tempList = list ++ (shuffle(for (city <- cities if !list.contains(city)) yield city))
+          new Tour(tempList.toList, map)
+        }
+        case (Nil, y :: rest) => {
+          if (list.contains(y))
+            addToTour(Nil, Nil, list)
+          else
+            addToTour(Nil, rest, list :+ y)
+        }
+        case (x :: rest, Nil) => {
+          if (list.contains(x))
+            addToTour(Nil, Nil, list)
+          else
+            addToTour(rest, Nil, x +: list)
+        }
+        case _ => {
+          if (list.contains(xs.head))
+            addToTour(Nil, ys, list)
+          else if (list.contains(ys.head))
+            addToTour(xs, Nil, list)
+          else if (xs.head == ys.head) {
+            addToTour(xs.tail, ys.tail, xs.head +: list)
+          } else addToTour(xs.tail, ys.tail, xs.head +: list :+ ys.head)
+        }
       }
     }
 
     // select a random city
     val r = cities(random.nextInt(cities.length))
-    val left = cities.take(cities.indexOf(r) - 1).reverse
-    val right = tour.cities.drop(tour.cities.indexOf(r))
+    val indexA = cities.indexOf(r)
+    val indexB = tour.cities.indexOf(r)
+    val left = (cities.drop(indexA + 1) ::: cities.take(indexA)).reverse
+    val right = tour.cities.drop(indexB + 1) ::: tour.cities.take(indexB)
     addToTour(left, right, new DList[Int](r, new DList[Int]))
   }
 
@@ -51,14 +74,14 @@ class Tour(val cities : List[Int], val map : Array[Array[Double]]) {
       }
     }
 
-    @tailrec def optimize(oldTour : Tour, newTour : Tour) : Tour = {
-      println(oldTour.fitness - newTour.fitness)
-      if (oldTour.fitness <= newTour.fitness) {
+    @tailrec def optimize(oldTour : Tour, newTour : Tour, count : Int) : Tour = {
+      // println(oldTour.fitness - newTour.fitness)
+      if (oldTour.fitness <= newTour.fitness || count == 0) {
         oldTour
       } else {
-        optimize(newTour, twoOpt(newTour))
+        optimize(newTour, twoOpt(newTour), count -1)
       }
     }
-    optimize(this, twoOpt(this))
+    optimize(this, twoOpt(this), 10)
   }
 }

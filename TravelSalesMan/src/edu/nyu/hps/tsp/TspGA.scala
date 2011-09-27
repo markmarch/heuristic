@@ -11,16 +11,16 @@ object TspGA {
 //    val mutated = tour.mutate()
 //    println("Tour cost: " + tour.fitness + "\nMutated cost:" + mutated.fitness)
     time {
-      findOptimal("sample.txt")
+      findOptimal("a280.tsp")
     }
   }
   
   def findOptimal(fileName : String) {
     val map = readData(Source.fromFile(fileName).getLines())
-    val populationSize = 20
-    val generationSize = 3
-    val mutationRate = 0.05
-    val eliminationRate = 0.6
+    val populationSize = 100
+    val generationSize = 4
+    val mutationRate = 0.2
+    val eliminationRate = 0.4
     
     val initialPopulation = Population.generate(populationSize, map)
     val population = new Population(initialPopulation, generationSize, eliminationRate, mutationRate)

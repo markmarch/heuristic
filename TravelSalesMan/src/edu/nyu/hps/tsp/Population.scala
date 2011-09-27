@@ -50,23 +50,23 @@ class Population(tours : List[Tour], generationSize : Int, selection : Double, m
         }
       }
 
-      addToPopulation(list, populationSize - afterSelection.size)
+      addToPopulation(List(), populationSize)
     }
 
     val afterMultiplication = multiplication(afterSelection.sortBy(_.fitness))
     println("multiplication finished")
     
-    @tailrec def mutation(list : List[Tour], count : Int) : List[Tour] = {
-      println("mutating #" + count)
-      if (count == 0)
-        list
-      else {
-        val r = count
-        mutation(list.take( - 1) ::: List(afterMultiplication(r).mutate()) ::: list.drop(r), count - 1)
-      }
-    }
-
-    val result = mutation(afterMultiplication, mutationSize)
+//    @tailrec def mutation(list : List[Tour], count : Int) : List[Tour] = {
+//      println("mutating #" + count)
+//      if (count == 0)
+//        list
+//      else {
+//        val r = count
+//        mutation(list.take(r - 1) ::: List(afterMultiplication(r).mutate()) ::: list.drop(r), count - 1)
+//      }
+//    }
+//
+    val result = afterMultiplication.take(mutationSize).map(_.mutate()) ::: afterMultiplication.drop(mutationSize)
     println("mutation finished")
     result
   }
