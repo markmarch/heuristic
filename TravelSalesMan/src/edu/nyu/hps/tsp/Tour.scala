@@ -82,6 +82,6 @@ class Tour(val cities : List[Int], val map : Array[Array[Double]]) {
         optimize(newTour, twoOpt(newTour), count -1)
       }
     }
-    optimize(this, twoOpt(this), 100)
+    optimize(this, twoOpt(this), 50)
   }
 }
