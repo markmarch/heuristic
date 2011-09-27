@@ -6,22 +6,24 @@ import scala.io.Source
 
 object TspGA {
   def main(args : Array[String]) : Unit = {
-//    val map = readData(Source.fromFile("a280.tsp").getLines)
-//    val tour = new Tour(shuffle((0 to 19).toList), map)
-//    val mutated = tour.mutate()
-//    println("Tour cost: " + tour.fitness + "\nMutated cost:" + mutated.fitness)
+    val map = readData(Source.fromFile("a280.tsp").getLines)
+    val tourA = new Tour(shuffle((0 to 279).toList), map)
     time {
-      findOptimal("a280.tsp")
+      val tourB = tourA.mutate()
+      println(tourB.fitness)
     }
+//    time {
+//      findOptimal("a280.tsp")
+//    }
   }
-  
+
   def findOptimal(fileName : String) {
     val map = readData(Source.fromFile(fileName).getLines())
-    val populationSize = 20
-    val generationSize = 3
-    val mutationRate = 0.05
-    val eliminationRate = 0.6
-    
+    val populationSize = 200
+    val generationSize = 10
+    val mutationRate = 0.2
+    val eliminationRate = 0.4
+
     val initialPopulation = Population.generate(populationSize, map)
     val population = new Population(initialPopulation, generationSize, eliminationRate, mutationRate)
     val tour = population.findOptimal()
@@ -34,7 +36,7 @@ object TspGA {
       val data = line.trim.split(""" +""").flatMap((token : String) => Some(token.toDouble))
       new City(data(0).toInt, data(1), data.drop(2) : _*)
     }
-    
+
     val cities = (for (line <- lines) yield createCity(line)).toList
     val map = new Array[Array[Double]](cities.length)
     for (i <- 0 until cities.length) {
