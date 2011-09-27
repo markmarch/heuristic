@@ -63,7 +63,7 @@ class Tour(val cities : List[Int], val map : Array[Array[Double]]) {
         pair = p
         reduce = delta
       }
-      
+      // println(reduce)
       if (reduce > 0) {
         val (a, b, c, d) = (pair._1.from, pair._1.to, pair._2.from, pair._2.to)
         val (indexA, indexC) = (tour.cities.indexOf(a) + 1, tour.cities.indexOf(c) + 1)
