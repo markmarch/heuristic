@@ -6,15 +6,20 @@ import scala.io.Source
 
 object TspGA {
   def main(args : Array[String]) : Unit = {
-//    val map = readData(Source.fromFile("a280.tsp").getLines)
-//    val tour = new Tour(shuffle((0 to 19).toList), map)
-//    val mutated = tour.mutate()
-//    println("Tour cost: " + tour.fitness + "\nMutated cost:" + mutated.fitness)
-    time {
-      findOptimal("a280.tsp")
-    }
+    val map = readData(Source.fromFile("sample_input.txt").getLines)
+    val tour = new Tour(shuffle((0 to map.length - 1).toList), map)
+    val mutated = tour.mutate()
+    println(constructTour(mutated.cities))
+    // println("Tour cost: " + tour.fitness + "\nMutated cost:" + mutated.fitness)
+//    time {
+//      findOptimal("a280.tsp")
+//    }
   }
   
+  def constructTour(list : List[Int]) = {
+    val start = list.indexOf(0)
+    (list.drop(start) ::: list.take(start)).map(_+1).mkString("[", ",", ", 1]")
+  }
   def findOptimal(fileName : String) {
     val map = readData(Source.fromFile(fileName).getLines())
     val populationSize = 100

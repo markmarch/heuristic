@@ -52,7 +52,7 @@ class Tour(val cities : List[Int], val map : Array[Array[Double]]) {
   def mutate() = {
     def twoOpt(tour : Tour) = {
       var (pair, reduce) = ((tour.path(0), tour.path(1)), Double.MinValue)
-      val opts = for {
+      for {
         i <- 0 until tour.path.length; 
         j <- i + 1 until tour.path.length
         val p = (tour.path(i), tour.path(j))
@@ -82,6 +82,6 @@ class Tour(val cities : List[Int], val map : Array[Array[Double]]) {
         optimize(newTour, twoOpt(newTour), count -1)
       }
     }
-    optimize(this, twoOpt(this), 10)
+    optimize(this, twoOpt(this), 100)
   }
 }

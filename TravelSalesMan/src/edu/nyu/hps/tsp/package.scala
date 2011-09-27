@@ -8,6 +8,7 @@ import scala.util.Random
 package object tsp {
   // random seed
   val random = new Random(1316995487325L)
+  val minTime = 1000L
   
   // swap 2 elements in an array
   def swap[T](i : Int, j : Int, array : Array[T]) = {
